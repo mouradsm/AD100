@@ -1,37 +1,27 @@
 import java.util.ArrayList;
 
 class Prova {
+
     private ArrayList<Questao> questoes;
     private int quantidadeQuestoes;
 
-    private Prova(ProvaBuilder builder){
-    	this.quantidadeQuestoes = builder.quantidadeQuestoes;
-    	this.questoes = builder.questoes;
+    public Prova(int quantidadeQuestoes){
+    	this.quantidadeQuestoes = quantidadeQuestoes;
+    	this.questoes = new ArrayList<Questao>();
+
+        //UTILIZEI O PADRÃO BUIDER PARA DINAMIZAR A CRIAÇÃO DAS QUESTÕES SEM PRECISAR ITERAÇAO.
+        Discursiva discursiva = new Discursiva.DiscursivaBuilder("Qual é o número da última versão de Java?", "8").build();
+
+        VerdadeiroFalso verdadeiroFalso = new VerdadeiroFalso.VerdadeiroFalsoBuilder()
+                .item(new ItemVerdadeiroFalso("Java foi lançada há mais de 20 anos atrás", true))
+                .item(new ItemVerdadeiroFalso("OO surgiu com a linguagem Java", false))
+                .item(new ItemVerdadeiroFalso("Eclipse é um editor de texto multilinguagem", true))
+                .build();
+
+        this.questoes.add(discursiva);
+        this.questoes.add(verdadeiroFalso);
     }
-    
-    public static class ProvaBuilder {
-    	private int quantidadeQuestoes;
-    	private ArrayList<Questao> questoes;
-    	
-    	public ProvaBuilder(){
-    		this.questoes = new ArrayList<Questao>();
-    	}
-    	
-    	public ProvaBuilder quantidadeQuestoes(int quantidadeQuestoes){
-    		this.quantidadeQuestoes = quantidadeQuestoes;
-    		return this;
-    	}
-    	
-    	public ProvaBuilder questao(Questao questao){
-    		this.questoes.add(questao);
-    		return this;
-    	}
-    	
-    	public Prova build() {
-    		return new Prova(this);
-    	}
-    }
-    
+
     public void print() {
 
     	if(this.quantidadeQuestoes != this.questoes.size()){
@@ -157,18 +147,7 @@ class VerdadeiroFalso extends Questao {
 public class AD1_2017_2 {
     public static void main(String[] args) {
                 
-    	//UTILIZEI O PADRÃO BUIDER PARA DINAMIZAR A CRIAÇÃO DAS QUESTÕES.
-    	Discursiva ds = new Discursiva.DiscursivaBuilder("Qual é o número da última versão de Java?", "8").build();
-    	
-    	VerdadeiroFalso vf = new VerdadeiroFalso.VerdadeiroFalsoBuilder()
-    		.item(new ItemVerdadeiroFalso("Java foi lançada há mais de 20 anos atrás", true))
-    		.item(new ItemVerdadeiroFalso("OO surgiu com a linguagem Java", false))
-    		.item(new ItemVerdadeiroFalso("Eclipse é um editor de texto multilinguagem", true))
-    		.build();
-    	    	
-        Prova prova = new Prova.ProvaBuilder().quantidadeQuestoes(2).questao(ds).questao(vf).build();
-            
-                	
+        Prova prova = new Prova(2);
         prova.print();
 
     }
